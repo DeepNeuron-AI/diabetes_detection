@@ -6,7 +6,7 @@ Backprop: Descent (ReLu for later)
 """
 import tensorflow as tf
 import numpy as np
-np.warnings.filterwarnings('ignore')    # For NaN entries
+#np.warnings.filterwarnings('ignore')    # For NaN entries
 input_layer_size = 8
 data = np.genfromtxt("data_scratch.csv", delimiter=",")
 data_feed = np.zeros(shape=(768, input_layer_size))
@@ -26,14 +26,14 @@ hidden2 = tf.contrib.layers.fully_connected(hidden1, hiddenLayer2_size, activati
 
 output = tf.contrib.layers.fully_connected(hidden2, 1, activation_fn=None)
 loss = tf.squeeze(tf.square(_label - output))
-backprop = tf.train.GradientDescentOptimizer(0.001).minimize(loss)  # 0.005 is the L learning rate
+backprop = tf.train.GradientDescentOptimizer(0.05).minimize(loss)  # 0.005 is the L learning rate
 
 # Training the MLP
 sess = tf.Session()
 init = tf.global_variables_initializer()
 sess.run(init)
 
-for epoch in range(5):
+for epoch in range(10):
     for insample in range(600):  # 600 for training 168 for testing
         X = np.expand_dims(data_feed[insample], axis=0)
         Y = [[labels[insample]]]
@@ -48,9 +48,9 @@ for insample in range(600, 768):
     Y = [[labels[insample]]]
     result, L = sess.run((output, loss), feed_dict={_input: X, _label: Y})
     meanLoss += L
-    if result > 0 and labels[insample] == 1.0:
+    if result >= 0.5 and labels[insample] == 1.0:
         accuracy += 1
-    elif result < 0 and labels[insample] == 0.0:
+    elif result < 0.5 and labels[insample] == 0.0:
         accuracy += 1
 
 accuracy /= 100
