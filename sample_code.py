@@ -31,25 +31,31 @@ sess = tf.Session()
 init = tf.global_variables_initializer()
 sess.run(init)
 
-for epoch in range(20):
-    for insample in range(400):
-        X = np.expand_dims(data[insample], axis = 0) #expanding dimension
-        Y = [[labels[insample]]]
-        sess.run(backprop, feed_dict={_input:X, _label:Y})
+for insample in range(400):
+    print(np.expand_dims(data[insample], axis = 0))
+    Y = [labels[insample]]
+    
+    #print(Y)
+
+#for epoch in range(20):
+#    for insample in range(400):
+#        X = np.expand_dims(data[insample], axis = 0) #expanding dimension
+#        Y = [[labels[insample]]]
+#        sess.run(backprop, feed_dict={_input:X, _label:Y})
 
 
 
-accuracy = 0
-meanLoss = 0
-for insample in range(400, 500):
-    X = np.expand_dims(data[insample], axis = 0)
-    Y = [[labels[insample]]]
-    result, L = sess.run((output, loss), feed_dict={_input: X, _label: Y})
-    meanLoss += L
-    if result > 0 and labels[insample] == 1:
-        accuracy += 1
-    elif result < 0 and labels[insample] == -1:
-        accuracy += 1
-
-print(accuracy)
-print(meanLoss)
+#accuracy = 0
+#meanLoss = 0
+#for insample in range(400, 500):
+#    X = np.expand_dims(data[insample], axis = 0)
+#    Y = [[labels[insample]]]
+#    result, L = sess.run((output, loss), feed_dict={_input: X, _label: Y})
+#    meanLoss += L
+#    if result > 0 and labels[insample] == 1:
+#        accuracy += 1
+#    elif result < 0 and labels[insample] == -1:
+#        accuracy += 1
+#
+#print(accuracy)
+#print(meanLoss)
